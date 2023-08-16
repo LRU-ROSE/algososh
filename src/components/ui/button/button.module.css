@@ -24,8 +24,11 @@
   fill: var(--text-color-secondary);
 }
 
-.button:disabled {
+.button:disabled,
+fieldset:invalid .buttonDisableFieldsetError,
+form:invalid .buttonDisableFormError {
   background-color: var(--bg-button-disabled);
+  pointer-events: none;
 }
 
 .big {

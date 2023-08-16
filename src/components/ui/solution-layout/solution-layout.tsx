@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { ReturnButton } from "../return-button/return-button";
 import { Link } from "react-router-dom";
 import styles from "./solution-layout.module.css";
@@ -6,13 +6,14 @@ import styles from "./solution-layout.module.css";
 interface SolutionLayoutProps {
   title: string;
   extraClass?: string;
+  children?: ReactNode;
 }
 
-export const SolutionLayout: React.FC<SolutionLayoutProps> = ({
+export const SolutionLayout = ({
   extraClass = "",
   title,
   children,
-}) => {
+}: SolutionLayoutProps): JSX.Element => {
   return (
     <main className={`${styles.content} ${extraClass}`}>
       <div className={styles.titleBox}>

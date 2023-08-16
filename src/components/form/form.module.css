@@ -1,0 +1,7 @@
+.form {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 12px;
+  max-width: 950px;
+  margin: 0 auto;
+}
