@@ -394,7 +394,7 @@ export const ListPage = (): JSX.Element => {
               text="Удалить по индексу"
               linkedList="big"
               isLoader={state === State.IndexRemove}
-              disabled={state !== State.Idle || list.empty}
+              disabled={state !== State.Idle || list.empty || +addIndex.current >= list.size}
               onClick={indexRemoveFun}
             />
           </Fieldset>
