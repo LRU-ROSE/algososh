@@ -1,0 +1,8 @@
+.chars {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 48px 12px;
+  justify-content: center;
+  max-width: 944px;
+  margin: 120px auto 0 auto;
+}

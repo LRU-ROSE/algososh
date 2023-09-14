@@ -1,0 +1,12 @@
+.array {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 48px 12px;
+  justify-content: center;
+  margin-top: 48px;
+  align-items: flex-end;
+}
+
+.marginLeft {
+  margin-left: 20px;
+}

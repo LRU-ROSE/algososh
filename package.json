@@ -3,28 +3,42 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.4.0",
-    "@types/node": "^16.11.22",
-    "@types/react": "^17.0.39",
-    "@types/react-dom": "^17.0.11",
-    "nanoid": "^3.2.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-fast-marquee": "^1.3.1",
-    "react-router-dom": "^5.2.1",
-    "react-scripts": "5.0.0",
-    "typescript": "^4.5.5",
-    "web-vitals": "^2.1.4"
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^29.5.3",
+    "@types/node": "^20.4.1",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "nanoid": "^4.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-fast-marquee": "^1.6.0",
+    "react-router-dom": "^6.15.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^5.1.6",
+    "web-vitals": "^3.4.0"
+  },
+  "overrides": {
+    "typescript": "$typescript"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && gh-pages -d build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LRU-ROSE/algososh.git"
+  },
+  "author": "Maksim Rose",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LRU-ROSE/algososh/issues"
+  },
+  "homepage": "https://LRU-ROSE.github.io/algososh",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -44,6 +58,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.3"
+    "@types/react-router-dom": "^5.3.3",
+    "gh-pages": "^5.0.0"
   }
 }
