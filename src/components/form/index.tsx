@@ -13,7 +13,7 @@ const Form = ({ className, onSubmit, children }: Props): JSX.Element => {
     lastOnSubmit.current?.((e.nativeEvent as SubmitEvent).submitter);
   }, [lastOnSubmit]);
   return (
-    <form className={cx(cs.form, className)} onSubmit={handleSubmit}>
+    <form className={cx(cs.form, className)} onSubmit={handleSubmit} data-type="form">
       {children}
     </form>
   );

@@ -7,16 +7,10 @@ import wait from "../../helpers/wait";
 import { Circle } from "../ui/circle/circle";
 import useInputValue from "../../helpers/useInputValue";
 import Fieldset from "../fieldset";
+import { getFibonacciNumbers } from "./fibonacci";
+import { CIRCLE_TESTID, INPUT_TESTID, SUBMIT_TESTID } from "./constants";
 
 import cs from "./fibonacci-page.module.css";
-
-const getFibonacciNumbers = (count: number): number[] => {
-  const rv = new Array(count + 1);
-  for (let i = 0; i <= count; i += 1) {
-    rv[i] = i <= 1 ? 1 : rv[i - 1] + rv[i - 2];
-  }
-  return rv;
-};
 
 export const FibonacciPage = (): JSX.Element => {
   const [count, setCount] = useInputValue();
@@ -46,13 +40,24 @@ export const FibonacciPage = (): JSX.Element => {
             onChange={setCount}
             disabled={progress}
             value={count.current}
+            testId={INPUT_TESTID}
           />
-          <Button type="submit" text="Рассчитать" isLoader={progress} />
+          <Button
+            type="submit"
+            text="Рассчитать"
+            isLoader={progress}
+            testId={SUBMIT_TESTID}
+          />
         </Fieldset>
       </Form>
       <div className={cs.numbers}>
         {numbers.map((n, i) => (
-          <Circle key={`${n}_${i}`} letter={String(n)} index={i} />
+          <Circle
+            key={`${n}_${i}`}
+            letter={String(n)}
+            index={i}
+            testId={CIRCLE_TESTID}
+          />
         ))}
       </div>
     </SolutionLayout>

@@ -1,0 +1,10 @@
+export const INPUT_TESTID = "list-input";
+export const INDEX_INPUT_TESTID = "list-index-input";
+export const ADD_HEAD_TESTID = "list-add-head";
+export const ADD_TAIL_TESTID = "list-add-tail";
+export const ADD_INDEX_TESTID = "list-add-index";
+export const DELETE_HEAD_TESTID = "list-delete-head";
+export const DELETE_TAIL_TESTID = "list-delete-tail";
+export const DELETE_INDEX_TESTID = "list-index-tail";
+export const CIRCLE_TESTID = "list-circle";
+export const CIRCLE_MINI_TESTID = "list-mini-circle";

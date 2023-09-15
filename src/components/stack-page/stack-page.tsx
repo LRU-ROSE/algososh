@@ -9,6 +9,13 @@ import { Circle } from "../ui/circle/circle";
 import { ElementStates } from "../../types/element-states";
 import wait from "../../helpers/wait";
 import useLatestRef from "../../helpers/useLatestRef";
+import {
+  CIRCLE_TESTID,
+  CLEAR_TESTID,
+  DELETE_TESTID,
+  INPUT_TESTID,
+  SUBMIT_TESTID,
+} from "./constants";
 
 import cs from "./stack-page.module.css";
 
@@ -86,12 +93,14 @@ export const StackPage = (): JSX.Element => {
             onChange={setAddValue}
             disabled={state !== State.Idle}
             value={addValue.current}
+            testId={INPUT_TESTID}
           />
           <Button
             type="submit"
             text="Добавить"
             isLoader={state === State.Adding}
             disabled={state !== State.Idle}
+            testId={SUBMIT_TESTID}
           />
         </Fieldset>
         <Button
@@ -100,6 +109,7 @@ export const StackPage = (): JSX.Element => {
           disabled={state !== State.Idle || stack.size === 0}
           isLoader={state === State.Removing}
           onClick={popFun}
+          testId={DELETE_TESTID}
         />
         <Button
           type="button"
@@ -107,6 +117,7 @@ export const StackPage = (): JSX.Element => {
           disabled={state !== State.Idle || stack.size === 0}
           onClick={clearFun}
           extraClass={cs.marginLeft}
+          testId={CLEAR_TESTID}
         />
       </Form>
       <div className={cs.stack}>
@@ -121,10 +132,13 @@ export const StackPage = (): JSX.Element => {
                 state={
                   headChanging ? ElementStates.Changing : ElementStates.Default
                 }
+                testId={CIRCLE_TESTID}
               />
             );
           }
-          return <Circle key={i} letter={el} index={i} />;
+          return (
+            <Circle key={i} letter={el} index={i} testId={CIRCLE_TESTID} />
+          );
         })}
       </div>
     </SolutionLayout>

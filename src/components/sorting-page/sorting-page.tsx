@@ -11,6 +11,7 @@ import { Direction } from "../../types/direction";
 import useLatestRef from "../../helpers/useLatestRef";
 import wait from "../../helpers/wait";
 import getUniformRand from "../../helpers/getUniformRand";
+import { CompareFn, MarkFn, bubbleSort, selectionSort } from "./sorts";
 
 import cs from "./sorting-page.module.css";
 
@@ -19,19 +20,6 @@ type ArrayEl = {
   value: number;
 };
 
-const swap = <T,>(array: T[], idx1: number, idx2: number): void => {
-  [array[idx1], array[idx2]] = [array[idx2], array[idx1]];
-};
-
-type MarkFn<T> = (array: T[], idxSorted: number) => void;
-type CompareFn<T> = (
-  array: T[],
-  idx1: number,
-  idx2: number
-) => Promise<boolean>;
-
-
-
 const createArray = (): ArrayEl[] => {
   const length = getUniformRand(3, 17);
   const rv: ArrayEl[] = new Array(length);
@@ -39,45 +27,6 @@ const createArray = (): ArrayEl[] => {
     rv[i] = { value: getUniformRand(0, 100), state: ElementStates.Default };
   }
   return rv;
-};
-
-const bubbleSort = async <T,>(
-  arr: T[],
-  compare: CompareFn<T>,
-  markSorted: MarkFn<T>
-) => {
-  let unsortedLen = arr.length;
-  while (unsortedLen > 1) {
-    let newLen = 0;
-    for (let i = 1; i < unsortedLen; i++) {
-      if (await compare(arr, i, i - 1)) {
-        swap(arr, i - 1, i);
-        newLen = i;
-      }
-    }
-    for (let i = newLen; i < unsortedLen; i += 1) {
-      markSorted(arr, i);
-    }
-    unsortedLen = newLen;
-  }
-  markSorted(arr, 0);
-};
-
-const selectionSort = async <T,>(
-  arr: T[],
-  compare: CompareFn<T>,
-  markSorted: MarkFn<T>
-) => {
-  for (let i = 0; i < arr.length; i += 1) {
-    let min = i;
-    for (let j = i + 1; j < arr.length; j += 1) {
-      if (await compare(arr, j, min)) {
-        min = j;
-      }
-    }
-    swap(arr, i, min);
-    markSorted(arr, i);
-  }
 };
 
 const enum SortingState {

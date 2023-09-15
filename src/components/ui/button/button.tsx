@@ -20,6 +20,7 @@ interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
   isLoader?: boolean;
   extraClass?: string;
   errorDisable?: ErrorDisable;
+  testId?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -31,6 +32,7 @@ export const Button: React.FC<ButtonProps> = ({
   errorDisable = ErrorDisable.FieldsetError,
   linkedList,
   disabled,
+  testId,
   ...rest
 }) => {
   const currentIcon =
@@ -63,6 +65,7 @@ export const Button: React.FC<ButtonProps> = ({
       className={className}
       type={type}
       disabled={isLoader || disabled}
+      data-testid={testId}
       {...rest}
     >
       {isLoader ? (
@@ -70,7 +73,7 @@ export const Button: React.FC<ButtonProps> = ({
       ) : (
         <>
           {sorting && currentIcon}
-          <p className={`text ${sorting && "ml-5"}`}>{text}</p>
+          <p className={cx('text', sorting && "ml-5")}>{text}</p>
         </>
       )}
     </button>
