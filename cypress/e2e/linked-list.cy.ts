@@ -11,6 +11,9 @@ import {
   INDEX_INPUT_TESTID,
 } from "../../src/components/list-page/constants";
 import { ElementStates } from "../../src/types/element-states";
+import { HEAD, LETTER, TAIL, qTestId } from "./helpers";
+
+const CIRCLE_QUERY = qTestId(CIRCLE_TESTID);
 
 const TEXT = "el";
 const checkCircle = (
@@ -22,20 +25,20 @@ const checkCircle = (
 ) => {
   cy.wrap(el)
     .should("have.attr", "class")
-    .should(($class) => {
-      expect($class).to.contain(state);
+    .should((className) => {
+      expect(className).to.contain(state);
     });
   if (text !== null) {
-    expect(el.find('[data-type="letter"]')).have.text(text);
+    expect(el.find(LETTER)).have.text(text);
   }
   if (typeof headCheck === "function") {
     headCheck(
       el
         .parent()
-        .find(`[data-type="head"] [data-testid="${CIRCLE_MINI_TESTID}"]`)
+        .find(`${HEAD} ${qTestId(CIRCLE_MINI_TESTID)}`)
     );
   } else if (headCheck !== null) {
-    expect(el.parent().find('[data-type="head"]')).have.text(
+    expect(el.parent().find(HEAD)).have.text(
       headCheck ? "head" : ""
     );
   }
@@ -43,10 +46,10 @@ const checkCircle = (
     tailCheck(
       el
         .parent()
-        .find(`[data-type="tail"] [data-testid="${CIRCLE_MINI_TESTID}"]`)
+        .find(`${TAIL} ${qTestId(CIRCLE_MINI_TESTID)}`)
     );
   } else if (tailCheck != null) {
-    expect(el.parent().find('[data-type="tail"]')).have.text(
+    expect(el.parent().find(TAIL)).have.text(
       tailCheck ? "tail" : ""
     );
   }
@@ -58,13 +61,13 @@ describe("list page works correctly", () => {
   });
 
   it("all buttons should be disabled when no text", () => {
-    cy.get(`[data-testid="${ADD_HEAD_TESTID}"]`).should("satisfy", (el) =>
+    cy.get(qTestId(ADD_HEAD_TESTID)).should("satisfy", (el) =>
       el[0].matches(":invalid *, :disabled")
     );
-    cy.get(`[data-testid="${ADD_TAIL_TESTID}"]`).should("satisfy", (el) =>
+    cy.get(qTestId(ADD_TAIL_TESTID)).should("satisfy", (el) =>
       el[0].matches(":invalid *, :disabled")
     );
-    cy.get(`[data-testid="${ADD_INDEX_TESTID}"]`).should("satisfy", (el) =>
+    cy.get(qTestId(ADD_INDEX_TESTID)).should("satisfy", (el) =>
       el[0].matches(":invalid *, :disabled")
     );
   });
@@ -72,11 +75,11 @@ describe("list page works correctly", () => {
   it("should display default list correctly", () => {
     cy.wait(1000);
     let length = 0;
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`).then((list) => {
+    cy.get(CIRCLE_QUERY).then((list) => {
       length = list.length;
     });
 
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`).each((el, index) => {
+    cy.get(CIRCLE_QUERY).each((el, index) => {
       checkCircle(
         el,
         null,
@@ -89,10 +92,10 @@ describe("list page works correctly", () => {
 
   it("should add head element correctly", () => {
     cy.wait(1000);
-    cy.get(`[data-testid="${INPUT_TESTID}"]`).type(TEXT);
-    cy.get(`[data-testid="${ADD_HEAD_TESTID}"]`).click();
+    cy.get(qTestId(INPUT_TESTID)).type(TEXT);
+    cy.get(qTestId(ADD_HEAD_TESTID)).click();
 
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .first()
       .then((el) => {
         checkCircle(
@@ -107,14 +110,14 @@ describe("list page works correctly", () => {
       });
 
     cy.wait(500);
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .first()
       .then((el) => {
         checkCircle(el, TEXT, true, false, ElementStates.Modified);
       });
 
     cy.wait(500);
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .first()
       .then((el) => {
         checkCircle(el, TEXT, true, false, ElementStates.Default);
@@ -123,10 +126,10 @@ describe("list page works correctly", () => {
 
   it("should add tail element correctly", () => {
     cy.wait(1000);
-    cy.get(`[data-testid="${INPUT_TESTID}"]`).type(TEXT);
-    cy.get(`[data-testid="${ADD_TAIL_TESTID}"]`).click();
+    cy.get(qTestId(INPUT_TESTID)).type(TEXT);
+    cy.get(qTestId(ADD_TAIL_TESTID)).click();
 
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .last()
       .then((el) => {
         checkCircle(
@@ -141,14 +144,14 @@ describe("list page works correctly", () => {
       });
 
     cy.wait(500);
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .last()
       .then((el) => {
         checkCircle(el, TEXT, false, true, ElementStates.Modified);
       });
 
     cy.wait(500);
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .last()
       .then((el) => {
         checkCircle(el, TEXT, false, true, ElementStates.Default);
@@ -159,18 +162,18 @@ describe("list page works correctly", () => {
     cy.wait(1000);
     let value = "";
     let length = 0;
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`).then((list) => {
+    cy.get(CIRCLE_QUERY).then((list) => {
       length = list.length;
     });
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .first()
-      .find('[data-type="letter"]')
+      .find(LETTER)
       .then((el) => {
         value = el.text();
       })
       .then(() => {
-        cy.get(`[data-testid="${DELETE_HEAD_TESTID}"]`).click();
-        cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+        cy.get(qTestId(DELETE_HEAD_TESTID)).click();
+        cy.get(CIRCLE_QUERY)
           .eq(0)
           .then((el) => {
             checkCircle(
@@ -190,7 +193,7 @@ describe("list page works correctly", () => {
             );
           });
         cy.wait(500);
-        cy.get(`[data-testid="${CIRCLE_TESTID}"]`).then(($list) => {
+        cy.get(CIRCLE_QUERY).then(($list) => {
           expect($list.length).to.eq(Math.max(0, length - 1));
         });
       })
@@ -201,18 +204,18 @@ describe("list page works correctly", () => {
     cy.wait(1000);
     let value = "";
     let length = 0;
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`).then((list) => {
+    cy.get(CIRCLE_QUERY).then((list) => {
       length = list.length;
     });
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .last()
-      .find('[data-type="letter"]')
+      .find(LETTER)
       .then((el) => {
         value = el.text();
       })
       .then(() => {
-        cy.get(`[data-testid="${DELETE_TAIL_TESTID}"]`).click();
-        cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+        cy.get(qTestId(DELETE_TAIL_TESTID)).click();
+        cy.get(CIRCLE_QUERY)
           .last()
           .then((el) => {
             checkCircle(
@@ -232,7 +235,7 @@ describe("list page works correctly", () => {
             );
           });
         cy.wait(500);
-        cy.get(`[data-testid="${CIRCLE_TESTID}"]`).then(($list) => {
+        cy.get(CIRCLE_QUERY).then(($list) => {
           expect($list.length).to.eq(Math.max(0, length - 1));
         });
       })
@@ -241,17 +244,17 @@ describe("list page works correctly", () => {
 
   it("should add element by index correctly", () => {
     cy.wait(1000);
-    cy.get(`[data-testid="${INPUT_TESTID}"]`).type(TEXT);
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(qTestId(INPUT_TESTID)).type(TEXT);
+    cy.get(CIRCLE_QUERY)
       .then(($list) => {
         const length = $list.length;
         const index = Math.round(Math.random() * length);
 
-        cy.get(`[data-testid="${INDEX_INPUT_TESTID}"]`).type(index.toString());
-        cy.get(`[data-testid="${ADD_INDEX_TESTID}"]`).click();
+        cy.get(qTestId(INDEX_INPUT_TESTID)).type(index.toString());
+        cy.get(qTestId(ADD_INDEX_TESTID)).click();
 
         for (let i = 0; i <= index; i += 1) {
-          cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+          cy.get(CIRCLE_QUERY)
             .eq(i)
             .then((el) => {
               checkCircle(
@@ -271,7 +274,7 @@ describe("list page works correctly", () => {
               );
             });
           if (i > 0) {
-            cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+            cy.get(CIRCLE_QUERY)
               .eq(i - 1)
               .then((el) => {
                 checkCircle(el, null, null, null, ElementStates.Changing);
@@ -280,7 +283,7 @@ describe("list page works correctly", () => {
           cy.wait(500);
         }
 
-        cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+        cy.get(CIRCLE_QUERY)
           .eq(index)
           .then((el) => {
             checkCircle(el, TEXT, null, null, ElementStates.Modified);
@@ -288,13 +291,13 @@ describe("list page works correctly", () => {
 
         cy.wait(500);
 
-        cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+        cy.get(CIRCLE_QUERY)
           .eq(index)
           .then((el) => {
             checkCircle(el, TEXT, null, null, ElementStates.Default);
           });
 
-        cy.get(`[data-testid="${CIRCLE_TESTID}"]`).then((newList) => {
+        cy.get(CIRCLE_QUERY).then((newList) => {
           expect(newList.length).to.eq(length + 1);
         });
       })
@@ -303,26 +306,25 @@ describe("list page works correctly", () => {
 
   it("should delete element by index correctly", () => {
     cy.wait(1000);
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .then((list) => {
         const length = list.length;
         const index = Math.floor(Math.random() * length);
-        const value = list.eq(index).find('[data-type="letter"]').eq(0).text();
+        const value = list.eq(index).find(LETTER).eq(0).text();
 
-        cy.get(`[data-testid="${INDEX_INPUT_TESTID}"]`).type(index.toString());
-        cy.get(`[data-testid="${DELETE_INDEX_TESTID}"]`).click();
+        cy.get(qTestId(INDEX_INPUT_TESTID)).type(index.toString());
+        cy.get(qTestId(DELETE_INDEX_TESTID)).click();
 
-        for (let i = 0; i < index; i += 1) {
-          cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
-          .eq(index)
+        for (let i = 0; i <= index; i += 1) {
+          cy.get(CIRCLE_QUERY)
+          .eq(i)
           .then((el) => {
             checkCircle(el, null, null, null, ElementStates.Changing);
           });
 
           cy.wait(500);
         }
-        cy.wait(500);
-        cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+        cy.get(CIRCLE_QUERY)
         .eq(index)
         .then((el) => {
           checkCircle(el, "", null, (miniCircle) => {
@@ -331,7 +333,7 @@ describe("list page works correctly", () => {
         });
 
         cy.wait(500);
-          cy.get(`[data-testid="${CIRCLE_TESTID}"]`).then((newList) => {
+          cy.get(CIRCLE_QUERY).then((newList) => {
             expect(newList.length).to.eq(length - 1);
           });
       })

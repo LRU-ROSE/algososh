@@ -6,6 +6,9 @@ import {
   DELETE_TESTID,
 } from "../../src/components/queue-page/constants";
 import { ElementStates } from "../../src/types/element-states";
+import { HEAD, LETTER, TAIL, qTestId } from "./helpers";
+
+const CIRCLE_QUERY = qTestId(CIRCLE_TESTID);
 
 const TEXT = "t";
 const COUNT = 4;
@@ -16,47 +19,47 @@ describe("queue page", () => {
   });
 
   it("add button should be disabled without text", () => {
-    cy.get(`[data-testid="${SUBMIT_TESTID}"]`).should("satisfy", (el) =>
+    cy.get(qTestId(SUBMIT_TESTID)).should("satisfy", (el) =>
       el[0].matches(":invalid *, :disabled")
     );
-    cy.get(`[data-testid="${CLEAR_TESTID}"]`).should("satisfy", (el) =>
+    cy.get(qTestId(CLEAR_TESTID)).should("satisfy", (el) =>
       el[0].matches(":invalid *, :disabled")
     );
-    cy.get(`[data-testid="${DELETE_TESTID}"]`).should("satisfy", (el) =>
+    cy.get(qTestId(DELETE_TESTID)).should("satisfy", (el) =>
       el[0].matches(":invalid *, :disabled")
     );
   });
 
   it("should add new elements correctly", () => {
     for (let i = 0; i < COUNT; i += 1) {
-      cy.get(`[data-testid="${INPUT_TESTID}"]`).type(i + TEXT);
-      cy.get(`[data-testid="${SUBMIT_TESTID}"]`).click();
+      cy.get(qTestId(INPUT_TESTID)).type(i + TEXT);
+      cy.get(qTestId(SUBMIT_TESTID)).click();
 
-      cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+      cy.get(CIRCLE_QUERY)
         .eq(i)
         .parent()
-        .find('[data-type="letter"]')
+        .find(LETTER)
         .should("have.text", i + TEXT);
-      cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+      cy.get(CIRCLE_QUERY)
         .eq(i)
         .parent()
-        .find('[data-type="tail"]')
+        .find(TAIL)
         .should("have.text", "tail");
-      cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+      cy.get(CIRCLE_QUERY)
         .eq(0)
         .parent()
-        .find('[data-type="head"]')
+        .find(HEAD)
         .should("have.text", "head");
 
       if (i > 0) {
-        cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+        cy.get(CIRCLE_QUERY)
           .eq(i - 1)
           .parent()
-          .find('[data-type="tail"]')
+          .find(TAIL)
           .should("not.have.text", "tail");
       }
 
-      cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+      cy.get(CIRCLE_QUERY)
         .eq(i)
         .should("have.attr", "class")
         .should(($class) => {
@@ -65,7 +68,7 @@ describe("queue page", () => {
 
       cy.wait(500);
 
-      cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+      cy.get(CIRCLE_QUERY)
         .eq(i)
         .should("have.attr", "class")
         .should(($class) => {
@@ -76,12 +79,12 @@ describe("queue page", () => {
 
   it("should delete elements correctly", () => {
     for (let i = 0; i < COUNT; i += 1) {
-      cy.get(`[data-testid="${INPUT_TESTID}"]`).type(i + TEXT);
-      cy.get(`[data-testid="${SUBMIT_TESTID}"]`).click();
+      cy.get(qTestId(INPUT_TESTID)).type(i + TEXT);
+      cy.get(qTestId(SUBMIT_TESTID)).click();
     }
     cy.wait(COUNT * 500);
-    cy.get(`[data-testid="${DELETE_TESTID}"]`).click();
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(qTestId(DELETE_TESTID)).click();
+    cy.get(CIRCLE_QUERY)
       .eq(0)
       .should("have.attr", "class")
       .should(($class) => {
@@ -90,41 +93,41 @@ describe("queue page", () => {
 
     cy.wait(500);
 
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .eq(0)
       .should("have.attr", "class")
       .should(($class) => {
         expect($class).to.contain(ElementStates.Default);
       });
 
-      cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+      cy.get(CIRCLE_QUERY)
         .eq(0)
-        .find('[data-type="letter"]')
+        .find(LETTER)
         .should("have.text", "");
-      cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+      cy.get(CIRCLE_QUERY)
         .eq(0)
         .parent()
-        .find('[data-type="head"]')
+        .find(HEAD)
         .should("have.text", "");
-      cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+      cy.get(CIRCLE_QUERY)
         .eq(1)
         .parent()
-        .find('[data-type="head"]')
+        .find(HEAD)
         .should("have.text", "head");
   });
 
   it("should clear queue correctly", () => {
     for (let i = 0; i < COUNT; i += 1) {
-      cy.get(`[data-testid="${INPUT_TESTID}"]`).type(i + TEXT);
-      cy.get(`[data-testid="${SUBMIT_TESTID}"]`).click();
+      cy.get(qTestId(INPUT_TESTID)).type(i + TEXT);
+      cy.get(qTestId(SUBMIT_TESTID)).click();
     }
 
     cy.wait(COUNT * 500);
-    cy.get(`[data-testid="${CLEAR_TESTID}"]`).click();
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`).each((el) => {
-      expect(el.find('[data-type="letter"]').text()).to.eq("");
-      expect(el.parent().find('[data-type="head"]').text()).to.eq("");
-      expect(el.parent().find('[data-type="tail"]').text()).to.eq("");
+    cy.get(qTestId(CLEAR_TESTID)).click();
+    cy.get(CIRCLE_QUERY).each((el) => {
+      expect(el.find(LETTER).text()).to.eq("");
+      expect(el.parent().find(HEAD).text()).to.eq("");
+      expect(el.parent().find(TAIL).text()).to.eq("");
     });
   });
 });

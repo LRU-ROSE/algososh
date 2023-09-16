@@ -6,6 +6,7 @@ import {
 import {
   getFibonacciNumbers,
 } from "../../src/components/fibonacci-page/fibonacci";
+import { LETTER, qTestId } from "./helpers";
 
 
 const INPUT_NUMBER = 10;
@@ -17,21 +18,21 @@ describe("fibonacci page", () => {
   });
 
   it("should be disabled button when there is no text", () => {
-    cy.get(`[data-testid="${SUBMIT_TESTID}"]`).should("satisfy", (el) =>
+    cy.get(qTestId(SUBMIT_TESTID)).should("satisfy", (el) =>
       el[0].matches(":invalid *, :disabled")
     );
   });
 
   it("should animate correctly", () => {
-    cy.get(`[data-testid="${INPUT_TESTID}"]`).type(INPUT_NUMBER.toString());
-    cy.get(`[data-testid="${SUBMIT_TESTID}"]`).click();
+    cy.get(qTestId(INPUT_TESTID)).type(INPUT_NUMBER.toString());
+    cy.get(qTestId(SUBMIT_TESTID)).click();
 
     for (let i = 0; i < INPUT_NUMBER + 1; i += 1) {
-      cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+      cy.get(qTestId(CIRCLE_TESTID))
         .eq(i)
-        .find('[data-type="letter"]')
-        .then(($p) => {
-          const n = $p.text();
+        .find(LETTER)
+        .then((p) => {
+          const n = p.text();
 
           if (i === 0 || i === 1) {
             expect(n, "text").to.equal("1");

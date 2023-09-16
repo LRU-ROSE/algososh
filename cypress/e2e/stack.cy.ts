@@ -6,6 +6,9 @@ import {
   DELETE_TESTID,
 } from "../../src/components/stack-page/constants";
 import { ElementStates } from "../../src/types/element-states";
+import { LETTER, qTestId } from "./helpers";
+
+const CIRCLE_QUERY = qTestId(CIRCLE_TESTID);
 
 const TEXT = "t";
 const addedElements = 3;
@@ -16,24 +19,24 @@ describe("stack page", () => {
   });
 
   it("should be disabled button when there is no text", () => {
-    cy.get(`[data-testid="${SUBMIT_TESTID}"]`).should("satisfy", (el) =>
+    cy.get(qTestId(SUBMIT_TESTID)).should("satisfy", (el) =>
       el[0].matches(":invalid *, :disabled")
     );
-    cy.get(`[data-testid="${CLEAR_TESTID}"]`).should("satisfy", (el) =>
+    cy.get(qTestId(CLEAR_TESTID)).should("satisfy", (el) =>
       el[0].matches(":invalid *, :disabled")
     );
-    cy.get(`[data-testid="${DELETE_TESTID}"]`).should("satisfy", (el) =>
+    cy.get(qTestId(DELETE_TESTID)).should("satisfy", (el) =>
       el[0].matches(":invalid *, :disabled")
     );
   });
 
   it("should animate adding new element", () => {
-    cy.get(`[data-testid="${INPUT_TESTID}"]`).type(TEXT);
-    cy.get(`[data-testid="${SUBMIT_TESTID}"]`).click();
+    cy.get(qTestId(INPUT_TESTID)).type(TEXT);
+    cy.get(qTestId(SUBMIT_TESTID)).click();
 
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`).last().as("top");
+    cy.get(CIRCLE_QUERY).last().as("top");
 
-    cy.get("@top").find('[data-type="letter"]').should("have.text", TEXT);
+    cy.get("@top").find(LETTER).should("have.text", TEXT);
 
     cy.get("@top")
       .should("have.attr", "class")
@@ -52,27 +55,27 @@ describe("stack page", () => {
 
   it("should delete element", () => {
     for (let i = 0; i < addedElements; i += 1) {
-      cy.get(`[data-testid="${INPUT_TESTID}"]`).type(TEXT);
-      cy.get(`[data-testid="${SUBMIT_TESTID}"]`).click();
+      cy.get(qTestId(INPUT_TESTID)).type(TEXT);
+      cy.get(qTestId(SUBMIT_TESTID)).click();
     }
 
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .should("have.length", addedElements);
-    cy.get(`[data-testid="${DELETE_TESTID}"]`).click();
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(qTestId(DELETE_TESTID)).click();
+    cy.get(CIRCLE_QUERY)
       .should("have.length", addedElements - 1);
   });
 
   it("should clear stack", () => {
     for (let i = 0; i < addedElements; i += 1) {
-      cy.get(`[data-testid="${INPUT_TESTID}"]`).type(TEXT);
-      cy.get(`[data-testid="${SUBMIT_TESTID}"]`).click();
+      cy.get(qTestId(INPUT_TESTID)).type(TEXT);
+      cy.get(qTestId(SUBMIT_TESTID)).click();
     }
 
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(CIRCLE_QUERY)
       .should("have.length", addedElements);
-    cy.get(`[data-testid="${CLEAR_TESTID}"]`).click();
-    cy.get(`[data-testid="${CIRCLE_TESTID}"]`)
+    cy.get(qTestId(CLEAR_TESTID)).click();
+    cy.get(CIRCLE_QUERY)
       .should("have.length", 0);
   });
 });

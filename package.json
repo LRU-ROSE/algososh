@@ -20,7 +20,7 @@
     "web-vitals": "^3.4.0"
   },
   "overrides": {
-    "typescript": "$typescript"
+    "typescript": "^5.1.6"
   },
   "scripts": {
     "start": "react-scripts start",
