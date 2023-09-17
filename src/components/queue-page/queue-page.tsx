@@ -9,6 +9,13 @@ import { Button } from "../ui/button/button";
 import wait from "../../helpers/wait";
 import { ElementStates } from "../../types/element-states";
 import useLatestRef from "../../helpers/useLatestRef";
+import {
+  CIRCLE_TESTID,
+  CLEAR_TESTID,
+  DELETE_TESTID,
+  INPUT_TESTID,
+  SUBMIT_TESTID,
+} from "./constants";
 
 import cs from "./queue-page.module.css";
 
@@ -151,12 +158,14 @@ export const QueuePage = (): JSX.Element => {
             onChange={setAddValue}
             disabled={state !== State.Idle || !queue.canEnqueue}
             value={addValue.current}
+            testId={INPUT_TESTID}
           />
           <Button
             type="submit"
             text="Добавить"
             isLoader={state === State.Adding}
             disabled={state !== State.Idle || !queue.canEnqueue}
+            testId={SUBMIT_TESTID}
           />
         </Fieldset>
         <Button
@@ -165,6 +174,7 @@ export const QueuePage = (): JSX.Element => {
           disabled={state !== State.Idle || !queue.canDequeue}
           isLoader={state === State.Removing}
           onClick={dequeueFun}
+          testId={DELETE_TESTID}
         />
         <Button
           type="button"
@@ -172,6 +182,7 @@ export const QueuePage = (): JSX.Element => {
           disabled={state !== State.Idle || !queue.isChanged}
           onClick={clearFun}
           extraClass={cs.marginLeft}
+          testId={CLEAR_TESTID}
         />
       </Form>
       <div className={cs.queue}>
@@ -187,6 +198,7 @@ export const QueuePage = (): JSX.Element => {
                     ? ElementStates.Changing
                     : ElementStates.Default
                 }
+                testId={CIRCLE_TESTID}
               />
             );
           }
@@ -203,6 +215,7 @@ export const QueuePage = (): JSX.Element => {
               state={
                 isChanging ? ElementStates.Changing : ElementStates.Default
               }
+              testId={CIRCLE_TESTID}
             />
           );
         })}

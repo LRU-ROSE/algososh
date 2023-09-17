@@ -11,6 +11,18 @@ import wait from "../../helpers/wait";
 import { ElementStates } from "../../types/element-states";
 import getUniformRand from "../../helpers/getUniformRand";
 import { ArrowIcon } from "../ui/icons/arrow-icon";
+import {
+  INPUT_TESTID,
+  CIRCLE_TESTID,
+  ADD_HEAD_TESTID,
+  ADD_TAIL_TESTID,
+  DELETE_HEAD_TESTID,
+  DELETE_TAIL_TESTID,
+  INDEX_INPUT_TESTID,
+  ADD_INDEX_TESTID,
+  DELETE_INDEX_TESTID,
+  CIRCLE_MINI_TESTID
+} from "./constants";
 
 import cs from "./list-page.module.css";
 
@@ -185,7 +197,7 @@ type ChangingType = {
 
 const initList = (): LinkedList<string> => {
   const rv = new LinkedList<string>();
-  const len = getUniformRand(0, 5);
+  const len = getUniformRand(2, 5);
   for (let i = 0; i <= len; i += 1) {
     rv.append(String(getUniformRand(0, 255)));
   }
@@ -331,6 +343,7 @@ export const ListPage = (): JSX.Element => {
               value={addValue.current}
               extraClass={cs.input}
               placeholder="Введите значение"
+              testId={INPUT_TESTID}
             />
             <Button
               type="button"
@@ -339,6 +352,7 @@ export const ListPage = (): JSX.Element => {
               isLoader={state === State.HeadAdd}
               disabled={state !== State.Idle}
               onClick={headAddFun}
+              testId={ADD_HEAD_TESTID}
             />
             <Button
               type="button"
@@ -347,6 +361,7 @@ export const ListPage = (): JSX.Element => {
               isLoader={state === State.TailAdd}
               disabled={state !== State.Idle}
               onClick={tailAddFun}
+              testId={ADD_TAIL_TESTID}
             />
           </Fieldset>
           <Button
@@ -356,6 +371,7 @@ export const ListPage = (): JSX.Element => {
             disabled={state !== State.Idle || list.empty}
             isLoader={state === State.HeadRemove}
             onClick={headRemoveFun}
+            testId={DELETE_HEAD_TESTID}
           />
           <Button
             type="button"
@@ -364,6 +380,7 @@ export const ListPage = (): JSX.Element => {
             disabled={state !== State.Idle || list.empty}
             isLoader={state === State.HeadRemove}
             onClick={tailRemoveFun}
+            testId={DELETE_TAIL_TESTID}
           />
         </div>
         <div className={cs.formRow}>
@@ -379,6 +396,7 @@ export const ListPage = (): JSX.Element => {
               value={addIndex.current}
               placeholder="Введите индекс"
               extraClass={cs.input}
+              testId={INDEX_INPUT_TESTID}
             />
             <Button
               type="button"
@@ -388,6 +406,7 @@ export const ListPage = (): JSX.Element => {
               isLoader={state === State.IndexAdd}
               disabled={state !== State.Idle}
               onClick={indexAddFun}
+              testId={ADD_INDEX_TESTID}
             />
             <Button
               type="button"
@@ -396,6 +415,7 @@ export const ListPage = (): JSX.Element => {
               isLoader={state === State.IndexRemove}
               disabled={state !== State.Idle || list.empty || +addIndex.current >= list.size}
               onClick={indexRemoveFun}
+              testId={DELETE_INDEX_TESTID}
             />
           </Fieldset>
         </div>
@@ -411,6 +431,7 @@ export const ListPage = (): JSX.Element => {
                 letter={changing.circleEl.value}
                 state={ElementStates.Changing}
                 isSmall
+                testId={CIRCLE_MINI_TESTID}
               />
             );
             if (changing.circleEl.isTop) {
@@ -441,6 +462,7 @@ export const ListPage = (): JSX.Element => {
                 head={head}
                 tail={tail}
                 state={state}
+                testId={CIRCLE_TESTID}
               />
             </Fragment>
           );
